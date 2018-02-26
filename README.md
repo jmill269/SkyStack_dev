@@ -35,7 +35,7 @@ I think working in two separate branches will be helpful, so we don't step on ea
 Here's a good link if you wanna read into it more: https://www.atlassian.com/git/tutorials/using-branches .
 
 But the idea behind it is pretty simple. Basically, the "master" branch is the main branch that should
-contain the most up-to-date working code. If you want to start working on something new, typing
+contain the most up-to-date working code. If you want to start working on something new, type
 "git branch whaterYouWannaNameTheBranch". This just creates the branch. To start working on it, type
 "git checkout whateverYouWannaNameTheBranch" and then you'll be moved to that branch. It will contain
 whatever files and changes that were saved in the master branch. If you ever want to view all the branches,
