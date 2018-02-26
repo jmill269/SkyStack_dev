@@ -21,7 +21,12 @@ be able to push without typing that in.
 
 Also, at any time you can type "git status" to see the status of everything. It'll tell you if you have things
 that aren't committed, things you need to "add", and a couple other things. I mainly use it to check whether or not
-I've aadded all the things I wanna add/committed all my changes.
+I've added all the things I wanna add/committed all my changes.
+
+Lastly, if I tell you I did something cool and you should pull it or vice versa, just typing "git pull" will pull the latest changes
+from the repo to your local machine. The most common error with this is if you've been working on something, and you haven't
+committed your changes, and you try to pull. This will cause some type of error. It can usually be avoided by forcing the pull,
+i.e git pull -f (I believe, might have to double check) or simply committing your changes first then pulling.
 
 
 
