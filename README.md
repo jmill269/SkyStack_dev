@@ -10,7 +10,7 @@ be able to start getting jiggy with it.
 
 # Basic Commands
 So, right now the only file in here is this README. Say I want to add a file called 'make_drone_land.py'.
-Once that file is in the same repo as this README, you can type "git add make_drone_land.py" to add it to be
+Once that file is in the same directory as this README, you can type "git add make_drone_land.py" to add it to be
 staged for committing. And if that's all you want to do for the day, type "git commit -am 'i added this file' ",
 then "git push". The -a flag stands for all changes, and the -m stands for message. It's good practice to add
 a message for each commit so you know what you did; it doesn't have to be long, stuff like "updated README" or
