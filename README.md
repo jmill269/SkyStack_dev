@@ -1,6 +1,11 @@
 # SkyStack_dev
 Localizing drone via GPS/camera feed alone
 
+# OpenCV Installation
+Just for reference (and so I don't lose it myself should I have to come back to it), this link
+provided the best method for installing OpenCV and other dependencies for Python/C++:
+http://pklab.net/?id=392&lang=EN
+
 
 # Yo!
 All you should need to do is type "git clone https://github.com/jmill269/SkyStack_dev.git", and
