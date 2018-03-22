@@ -16,7 +16,7 @@ using namespace cv;
 void createArucoMarkers() {
     Mat outputMarker;
 
-    Ptr<aruco::Dictionary> markerDictionary = aruco::getPredefinedDictionary();
+    Ptr<aruco::Dictionary> markerDictionary = aruco::getPredefinedDictionary(aruco::PREDEFINED_DICTIONARY_NAME::DICT_4X4_50);
 }
 
 int main(int agrgv, char** argc) {
