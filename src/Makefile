@@ -8,9 +8,11 @@ ALL=calibrate
 
 all: $(ALL)
 
-calibrate:
+calibrate: calibrate.o
+	@$(CC) $(LIB_DIRS) $(INC_DIR) ./calibrate.o -o ./calibrate
+calibrate.o:
 	@echo "Building 'calibrate'..."
-	@$(CC) $(LIB_DIRS) $(INC_DIR) -o calibrate calibrate.cpp
+	@$(CC) $(LIB_DIRS) $(INC_DIR) -c ./calibrate.cpp -o ./calibrate.o
 
 .PHONY: clean
 clean:
