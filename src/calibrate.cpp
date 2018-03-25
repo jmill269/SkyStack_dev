@@ -78,7 +78,7 @@ int main(int agrgv, char** argc) {
     namedWindow("Webcam", CV_WINDOW_AUTOSIZE);
 
     while (true) {
-        if (!vid.read()) {
+        if (!vid.read(frame)) {
             break;
         }
 
@@ -90,15 +90,14 @@ int main(int agrgv, char** argc) {
         drawChessboardCorners(drawToFrame, boardDimensions, foundPoints, found);
         if (found) {
             imshow("Webcam", drawToFrame);
-            else {
+            } else {
                 imshow("Webcam", frame);
             }
 
             char key = waitKey(1000/FPS);   // store key user presses for later
-        }
-
     }
-
 
     return 0;
 }
+
+
