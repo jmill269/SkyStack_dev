@@ -13,7 +13,7 @@ calibrate: calibrate.o
 calibrate.o:
 	@echo "Building 'calibrate'..."
 	@$(CC) $(LIB_DIRS) $(INC_DIR) -c ./calibrate.cpp -o ./calibrate.o
-cal_faster: cal_fast.o
+cal_faster: cal_faster.o
 	@$(CC) $(LIB_DIRS) $(INC_DIR) ./cal_faster.o -o ./cal_faster
 cal_faster.o:
 	@echo "Building 'calibrate'..."
