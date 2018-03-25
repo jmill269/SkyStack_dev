@@ -40,7 +40,7 @@ void createKnownBoardPos(Size boardSize, float sqEdgeLen, vector<Point3f>& corne
 }
 
 void getBoardCorners(vector<Mat> imgs, vector<vector<Point2f>>& allFoundCorners, bool showResults = false) {
-    for (vector<Mat<::iterator it = imgs.begin(); it != imgs.end; it++) {
+    for (vector<Mat>::iterator it = imgs.begin(); it != imgs.end; it++) {
         vector<Point2f> pointBuf;
         bool found = findChessboardCorners(*it, Size(boardDimensions), pointBuf, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE);
 
@@ -48,7 +48,7 @@ void getBoardCorners(vector<Mat> imgs, vector<vector<Point2f>>& allFoundCorners,
             allFoundCorners.push_back(pointBuf);
         }
         if (showResults) {
-            drawChessboardCorners(*it, Size(boardDimensions), pointbuf, found);
+            drawChessboardCorners(*it, Size(boardDimensions), pointBuf, found);
             imshow("Looking for Corners", *it);
             waitKey(0);
         }
