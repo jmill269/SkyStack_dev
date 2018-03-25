@@ -57,7 +57,47 @@ void getBoardCorners(vector<Mat> imgs, vector<vector<Point2f>>& allFoundCorners,
 
 
 int main(int agrgv, char** argc) {
-    createArucoMarkers();
+    //createArucoMarkers();
+    Mat frame;
+    Mat drawToFrame;
+    Mat cameraMatrix = Mat::eye(3,3, CV_64F);
+    Mat distanceCoeff;
+    vector<Mat> savedImages;
+
+    vector<vector<Point2f>> markerCorners, rejectedMarkers;
+
+    VideoCapture vid(0);
+
+    if (!vid.isOpened()) {
+        cerr << "Failed to open video feed.\n";
+        return 1;
+    }
+
+    int FPS = 20;   // frames per second
+
+    namedWindow("Webcam", CV_WINDOW_AUTOSIZE);
+
+    while (true) {
+        if (!vid.read()) {
+            break;
+        }
+
+        vector<Vec2f> foundPoints;
+        bool found = false;
+
+        found = findChessboardCorners(frame, boardDimensions, foundPoints, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE);
+        frame.copyTo(drawToFrame);
+        drawChessboardCorners(drawToFrame, boardDimensions, foundPoints, found);
+        if (found) {
+            imshow("Webcam", drawToFrame);
+            else {
+                imshow("Webcam", frame);
+            }
+
+            char key = waitKey(1000/FPS);   // store key user presses for later
+        }
+
+    }
 
 
     return 0;
