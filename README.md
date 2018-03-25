@@ -6,6 +6,9 @@ Just for reference (and so I don't lose it myself should I have to come back to 
 provided the best method for installing OpenCV and other dependencies for Python/C++:
 http://pklab.net/?id=392&lang=EN
 
+# If failing to grab camera feed:
+For some reason the Pi doesn't do this at startup occasionally.
+Run 'sudo modprobe bcm2835-v4l2' to enable the camera for openCV.
 
 # Yo!
 All you should need to do is type "git clone https://github.com/jmill269/SkyStack_dev.git", and
