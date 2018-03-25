@@ -4,7 +4,7 @@ LIB_DIRS = -L/usr/local/lib -lopencv_stitching -lopencv_superres -lopencv_videos
 
 INC_DIR =-I/usr/local/include/opencv -I/usr/local/include
 
-ALL=calibrate
+ALL=calibrate cal_faster
 
 all: $(ALL)
 
@@ -13,6 +13,12 @@ calibrate: calibrate.o
 calibrate.o:
 	@echo "Building 'calibrate'..."
 	@$(CC) $(LIB_DIRS) $(INC_DIR) -c ./calibrate.cpp -o ./calibrate.o
+cal_faster: cal_fast.o
+	@$(CC) $(LIB_DIRS) $(INC_DIR) ./cal_faster.o -o ./cal_faster
+cal_faster.o:
+	@echo "Building 'calibrate'..."
+	@$(CC) $(LIB_DIRS) $(INC_DIR) -c ./cal_faster.cpp -o ./cal_faster.o
+
 
 .PHONY: clean
 clean:
