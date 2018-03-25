@@ -12,6 +12,10 @@
 using namespace std;
 using namespace cv;
 
+const float calSquareDim = 0.025f;
+//const float arucoSquareDim =
+const Size boardDimensions = Size(6,9);
+
 
 void createArucoMarkers() {
     Mat outputMarker;
