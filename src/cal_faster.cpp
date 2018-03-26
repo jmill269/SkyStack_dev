@@ -132,7 +132,7 @@ int main(int agrgv, char** argc) {
         vector<Vec2f> foundPoints;
         bool found = false;
 
-        found = findChessboardCorners(frame, boardDimensions, foundPoints, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE | CV_CALIB_CV_FAST_CHECK);
+        found = findChessboardCorners(frame, boardDimensions, foundPoints, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE | CV_CALIB_CB_FAST_CHECK);
         frame.copyTo(drawToFrame);
         drawChessboardCorners(drawToFrame, boardDimensions, foundPoints, found);
         if (found) {
