@@ -55,6 +55,53 @@ void getBoardCorners(vector<Mat> imgs, vector<vector<Point2f>>& allFoundCorners,
     }
 }
 
+void cameraCalibration(vector<Mat> calImages, Size boardSize, float sqEdgeLen, Mat& cameraMatrix, Mat& distanceCoeff) {
+    vector<vector<Point2f>> checkerboardImgSpacePoints;
+    getBoardCorners(calImages, checkerboardImgSpacePoints, false);
+
+    vector<vector<Point3f>> worldSpaceCornerPoints(1);
+    createKnownBoardPos(boardSize, sqEdgeLen, worldSpaceCornerPoints[0]);
+    worldSpaceCornerPoints.resize(checkerboardImgSpacePoints.size(), worldSpaceCornerPoints[0]);
+
+    vector<Mat> rVecs, tVecs;
+    distanceCoeff = Mat::zeros(8,1, CV_64F);
+
+    calibrateCamera(worldSpaceCornerPoints, checkerboardImgSpacePoints, boardSize, cameraMatrix, distanceCoeff, rVecs, tVecs);
+}
+
+bool saveCameraCalibration(string filename, Mat cameraMatrix, Mat distanceCoeff) {
+    ofstream out(filename);
+    if (out) {
+        uint16_t rows = cameraMatrix.rows;
+        uint16_t cols = cameraMatrix.cols;
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                double value = cameraMatrix.at<double>(r,c);
+                out << value << endl;
+            }
+        }
+
+        rows = distanceCoeff.rows;
+        cols = distanceCoeff.cols;
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                double value = distanceCoeff.at<double>(r,c);
+                out << value << endl;
+            }
+        }
+
+        out.close();
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
 
 int main(int agrgv, char** argc) {
     //createArucoMarkers();
@@ -95,6 +142,26 @@ int main(int agrgv, char** argc) {
             }
 
             char key = waitKey(1000/FPS);   // store key user presses for later
+
+            switch (key) {
+                case ' ':   // saving image
+                    if (found) {
+                        Mat temp;
+                        frame.copyTo(temp);
+                        savedImages.push_back(temp);
+                    }
+                    break;
+                case 13:    // enter key
+                    // start calibration
+                    if (savedImages.size() > 15) {
+                        cameraCalibration(savedImages, boardDimensions, calSquareDim, cameraMatrix, distanceCoeff);
+                        saveCameraCalibration("CameraCalibration", cameraMatrix, distanceCoeff);
+                    }
+                    break;
+                case 27:    // esc key
+                    return 0;
+                    break;
+            }
     }
 
     return 0;
