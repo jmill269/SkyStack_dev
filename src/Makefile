@@ -16,7 +16,7 @@ calibrate.o:
 cal_faster: cal_faster.o
 	@$(CC) $(LIB_DIRS) $(INC_DIR) ./cal_faster.o -o ./cal_faster
 cal_faster.o:
-	@echo "Building 'calibrate'..."
+	@echo "Building 'cal_faster'..."
 	@$(CC) $(LIB_DIRS) $(INC_DIR) -c ./cal_faster.cpp -o ./cal_faster.o
 
 
