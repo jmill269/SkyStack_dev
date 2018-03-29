@@ -98,11 +98,6 @@ bool saveCameraCalibration(string filename, Mat cameraMatrix, Mat distanceCoeff)
     return false;
 }
 
-
-
-
-
-
 int main(int agrgv, char** argc) {
     //createArucoMarkers();
     Mat frame;
@@ -144,21 +139,20 @@ int main(int agrgv, char** argc) {
             char key = waitKey(1000/FPS);   // store key user presses for later
 
             switch (key) {
-                case ' ':   // saving image
+                case ' ':   // saving image, space key
                     if (found) {
                         Mat temp;
                         frame.copyTo(temp);
                         savedImages.push_back(temp);
                     }
                     break;
-                case 13:    // enter key
-                    // start calibration
+                case 13:    // enter key, start calibration after enough images have been taken
                     if (savedImages.size() > 15) {
                         cameraCalibration(savedImages, boardDimensions, calSquareDim, cameraMatrix, distanceCoeff);
                         saveCameraCalibration("CameraCalibration", cameraMatrix, distanceCoeff);
                     }
                     break;
-                case 27:    // esc key
+                case 27:    // esc key, close the window
                     return 0;
                     break;
             }
