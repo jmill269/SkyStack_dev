@@ -1,0 +1,11 @@
+follow the instructions located at the following link to setup flytSim
+http://docs.flytbase.com/docs/FlytSim/docker/setup.html
+
+Once installed, below is an outline for basic use. Also, remember to change the driver to PX4 in the flytconsol browser. (Should automatically open after running ./start.sh). Otherwise, the Gazebo interface will not be set to open. 
+
+1. Go to flytSim/linux/nvidiagraphics
+2. run <sudo ./start.sh> to start the 
+3. Either command the drone through the flytConsole or
+4. run <sudo ./openshell/.sh>.
+5. Find the app you are trying to run from the new terminal and then execute it. 
+
