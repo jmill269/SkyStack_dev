@@ -118,7 +118,7 @@ int startMonitoring() {
     vector<int> markerIDs;
     vector<vector<Point2f>> markerCorners, rejectedCands;
 
-
+    aruco::DetectorParameters parameters;
 
 }
 
