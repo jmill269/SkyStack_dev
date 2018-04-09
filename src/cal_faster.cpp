@@ -274,7 +274,7 @@ int main(int agrgv, char** argc) {
     Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
     Mat distortionCoefficients;
 
-    cameraCalibrationProcess(cameraMatrix, distortionCoefficients);
+    //cameraCalibrationProcess(cameraMatrix, distortionCoefficients);
     loadCameraCalibration("CameraCalibration", cameraMatrix, distortionCoefficients); // whatever calibration file is called is first arg
     startMonitoring(cameraMatrix, distortionCoefficients);
 

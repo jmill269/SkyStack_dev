@@ -4,7 +4,7 @@ LIB_DIRS = -L/usr/local/lib -lopencv_stitching -lopencv_superres -lopencv_videos
 
 INC_DIR =-I/usr/local/include/opencv -I/usr/local/include
 
-ALL=calibrate cal_faster
+ALL=cal_faster
 
 all: $(ALL)
 
