@@ -75,6 +75,9 @@ bool saveCameraCalibration(string filename, Mat cameraMatrix, Mat distanceCoeff)
         uint16_t rows = cameraMatrix.rows;
         uint16_t cols = cameraMatrix.cols;
 
+        out << rows << endl;
+        out << cols << endl;
+
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 double value = cameraMatrix.at<double>(r,c);
@@ -84,6 +87,9 @@ bool saveCameraCalibration(string filename, Mat cameraMatrix, Mat distanceCoeff)
 
         rows = distanceCoeff.rows;
         cols = distanceCoeff.cols;
+
+        out << rows << endl;
+        out << cols << endl;
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
@@ -157,8 +163,11 @@ int main(int agrgv, char** argc) {
                     break;
             }
     }
-
     return 0;
 }
+
+
+
+
 
 
