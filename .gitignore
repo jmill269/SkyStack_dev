@@ -3,3 +3,4 @@
 *.o
 *.jpg
 calibrate
+.DS_Store

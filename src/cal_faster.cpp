@@ -13,7 +13,7 @@ using namespace std;
 using namespace cv;
 
 const float calSquareDim = 0.025f;
-//const float arucoSquareDim =
+const float arucoSquareDim = 0.1143f;
 const Size boardDimensions = Size(6,9);
 
 
@@ -55,7 +55,7 @@ void getBoardCorners(vector<Mat> imgs, vector<vector<Point2f>>& allFoundCorners,
     }
 }
 
-void cameraCalibration(vector<Mat> calImages, Size boardSize, float sqEdgeLen, Mat& cameraMatrix, Mat& distanceCoeff) {
+void cameraCalibration(vector<Mat> calImages, Size boardSize, float sqEdgeLen, Mat& cameraMatrix, Mat& distortionCoeff) {
     vector<vector<Point2f>> checkerboardImgSpacePoints;
     getBoardCorners(calImages, checkerboardImgSpacePoints, false);
 
@@ -64,13 +64,13 @@ void cameraCalibration(vector<Mat> calImages, Size boardSize, float sqEdgeLen, M
     worldSpaceCornerPoints.resize(checkerboardImgSpacePoints.size(), worldSpaceCornerPoints[0]);
 
     vector<Mat> rVecs, tVecs;
-    distanceCoeff = Mat::zeros(8,1, CV_64F);
+    distortionCoeff = Mat::zeros(8,1, CV_64F);
 
-    calibrateCamera(worldSpaceCornerPoints, checkerboardImgSpacePoints, boardSize, cameraMatrix, distanceCoeff, rVecs, tVecs);
+    calibrateCamera(worldSpaceCornerPoints, checkerboardImgSpacePoints, boardSize, cameraMatrix, distortionCoeff, rVecs, tVecs);
 }
 
 
-bool loadCameraCalibration(string filename, Mat& cameraMatrix, Mat& distanceCoeff) {
+bool loadCameraCalibration(string filename, Mat& cameraMatrix, Mat& distortionCoeff) {
     ifstream in(filename);
 
     if (in) {
@@ -94,14 +94,14 @@ bool loadCameraCalibration(string filename, Mat& cameraMatrix, Mat& distanceCoef
         in >> rows;
         in >> cols;
 
-        distanceCoeff = Mat::zeros(rows, cols, CV_64F);
+        distortionCoeff = Mat::zeros(rows, cols, CV_64F);
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 double read = 0.0f;
                 in >> read;
-                distanceCoeff.at<double>(r,c) = read;
-                cout << distanceCoeff.at<double>(r,c) << "\n";
+                distortionCoeff.at<double>(r,c) = read;
+                cout << distortionCoeff.at<double>(r,c) << "\n";
             }
         }
 
@@ -112,7 +112,7 @@ bool loadCameraCalibration(string filename, Mat& cameraMatrix, Mat& distanceCoef
 }
 
 
-int startMonitoring() {
+int startMonitoring(const Mat& cameraMatrix, const Mat& distortionCoeff) {
     Mat frame;
 
     vector<int> markerIDs;
@@ -120,13 +120,56 @@ int startMonitoring() {
 
     aruco::DetectorParameters parameters;
 
+    Ptr<aruco::Dictionary> markerDictionary = aruco::getPredefinedDictionary(aruco::PREDEFINED_DICTIONARY_NAME::DICT_4X4_50);
+
+    VideoCapture vid(0);
+
+    if (!vid.isOpened()) {
+        return -1;      // bad
+    }
+
+    namedWindow("PiCam", CV_WINDOW_AUTOSIZE);
+
+    vector<Vec3d> rotationVectors, translationVectors;
+
+    while (true) {
+        if (!vid.read(frame)) {
+            break;
+        }
+
+        aruco::detectMarkers(frame, markerDictionary, markerCorners, markerIDs);
+        aruco::estimatePoseSingleMarkers(markerCorners, arucoSquareDim,
+            cameraMatrix, distortionCoeff, rotationVectors, translationVectors);
+        // above line is for detecting one aruco marker at a time.
+        // can also theoretically have a single sheet of paper with multiple markers
+
+        // might need to yoss an [i]th index here for the rVecs and tVecs.
+
+        // any problems with this method can be attriubted to a shitty camera calibration matrix.
+        // use 20-50 images instead of 15, and make sure to really rotate and get farther away.
+
+
+        /**
+            This loop is more for testing purposes. Once we can see that the axis
+            are being drawn correctly on different markers, this can be commented
+            out and we can just work with the rotation/translation vectors as necessary.
+        */
+        for (int i = 0; i < markerIDs.size(); i++) {
+            aruco::drawAxis(frame, cameraMatrix, distortionCoeff,
+                rotationVectors[i], translationVectors[i], 0.1f);
+        }
+
+        imshow("PiCam", frame);
+        if (waitKey(30) >= 0) {
+            break;
+        }
+    }
+
+    return 1;
+
 }
 
-
-
-
-
-bool saveCameraCalibration(string filename, Mat cameraMatrix, Mat distanceCoeff) {
+bool saveCameraCalibration(string filename, Mat cameraMatrix, Mat distortionCoeff) {
     ofstream out(filename);
     if (out) {
         uint16_t rows = cameraMatrix.rows;
@@ -142,15 +185,15 @@ bool saveCameraCalibration(string filename, Mat cameraMatrix, Mat distanceCoeff)
             }
         }
 
-        rows = distanceCoeff.rows;
-        cols = distanceCoeff.cols;
+        rows = distortionCoeff.rows;
+        cols = distortionCoeff.cols;
 
         out << rows << endl;
         out << cols << endl;
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                double value = distanceCoeff.at<double>(r,c);
+                double value = distortionCoeff.at<double>(r,c);
                 out << value << endl;
             }
         }
@@ -161,12 +204,10 @@ bool saveCameraCalibration(string filename, Mat cameraMatrix, Mat distanceCoeff)
     return false;
 }
 
-int main(int agrgv, char** argc) {
-    //createArucoMarkers();
+void cameraCalibrationProcess(Mat& cameraMatrix, Mat& distortionCoeff) {
     Mat frame;
     Mat drawToFrame;
-    Mat cameraMatrix = Mat::eye(3,3, CV_64F);
-    Mat distanceCoeff;
+
     vector<Mat> savedImages;
 
     vector<vector<Point2f>> markerCorners, rejectedMarkers;
@@ -175,7 +216,7 @@ int main(int agrgv, char** argc) {
 
     if (!vid.isOpened()) {
         cerr << "Failed to open video feed.\n";
-        return 1;
+        return;
     }
 
     int FPS = 20;   // frames per second
@@ -190,7 +231,8 @@ int main(int agrgv, char** argc) {
         vector<Vec2f> foundPoints;
         bool found = false;
 
-        found = findChessboardCorners(frame, boardDimensions, foundPoints, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE | CV_CALIB_CB_FAST_CHECK);
+        found = findChessboardCorners(frame, boardDimensions, foundPoints,
+            CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE | CV_CALIB_CB_FAST_CHECK);
         frame.copyTo(drawToFrame);
         drawChessboardCorners(drawToFrame, boardDimensions, foundPoints, found);
         if (found) {
@@ -211,15 +253,32 @@ int main(int agrgv, char** argc) {
                     break;
                 case 13:    // enter key, start calibration after enough images have been taken
                     if (savedImages.size() > 15) {
-                        cameraCalibration(savedImages, boardDimensions, calSquareDim, cameraMatrix, distanceCoeff);
-                        saveCameraCalibration("CameraCalibration", cameraMatrix, distanceCoeff);
+                        cameraCalibration(savedImages, boardDimensions, calSquareDim, cameraMatrix, distortionCoeff);
+                        saveCameraCalibration("CameraCalibration", cameraMatrix, distortionCoeff);
                     }
                     break;
                 case 27:    // esc key, close the window
-                    return 0;
+                    return;
                     break;
             }
     }
+}
+
+
+
+
+
+int main(int agrgv, char** argc) {
+    //createArucoMarkers();
+
+    Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
+    Mat distortionCoefficients;
+
+    cameraCalibrationProcess(cameraMatrix, distortionCoefficients);
+    loadCameraCalibration("CameraCalibration", cameraMatrix, distortionCoefficients); // whatever calibration file is called is first arg
+    startMonitoring(cameraMatrix, distortionCoefficients);
+
+
     return 0;
 }
 
