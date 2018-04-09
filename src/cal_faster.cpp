@@ -120,6 +120,31 @@ int startMonitoring() {
 
     aruco::DetectorParameters parameters;
 
+    Ptr < aruco::Dictionary> markerDictionary = aruco::getPredefinedDictionary(aruco::PREDEFINED_DICTIONARY_NAME::DICT_4X4_50);
+
+    VideoCapture vid(0);
+
+    if (!vid.isOpened()) {
+        return -1;      // bad
+    }
+
+    namedWindow("Webcam", CV_WINDOW_AUTOSIZE);
+
+    vector<Vec3d> rotationVectors, translationVectors;
+
+    while (true) {
+        if (!vid.read(frame)) {
+            break;
+        }
+
+        aruco::detectMarkers(frame, markerDictionary, markerCorners, markerIDs);
+        aruco::estimatePoseSingleMarkers()
+
+
+
+
+    }
+
 }
 
 
