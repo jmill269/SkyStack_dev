@@ -112,6 +112,16 @@ bool loadCameraCalibration(string filename, Mat& cameraMatrix, Mat& distanceCoef
 }
 
 
+int startMonitoring() {
+    Mat frame;
+
+    vector<int> markerIDs;
+    vector<vector<Point2f>> markerCorners, rejectedCands;
+
+
+
+}
+
 
 
 
