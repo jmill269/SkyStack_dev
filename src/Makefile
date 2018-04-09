@@ -23,4 +23,4 @@ cal_faster.o:
 .PHONY: clean
 clean:
 	@echo "Removing generated files..."
-	@rm -rf calibrate *.o *~ *#
+	@rm -rf calibrate cal_faster *.o *~ *#
