@@ -69,6 +69,53 @@ void cameraCalibration(vector<Mat> calImages, Size boardSize, float sqEdgeLen, M
     calibrateCamera(worldSpaceCornerPoints, checkerboardImgSpacePoints, boardSize, cameraMatrix, distanceCoeff, rVecs, tVecs);
 }
 
+
+bool loadCameraCalibration(string filename, Mat& cameraMatrix, Mat& distanceCoeff) {
+    ifstream in(filename);
+
+    if (in) {
+        uint16_t rows;
+        uint16_t cols;
+
+        in >> rows;
+        in >> cols;
+
+        cameraMatrix = Mat(Size(cols, rows), CV_64F);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                double read = 0.0f;
+                in >> read;
+                cameraMatrix.at<double>(r,c) = read;
+                cout << cameraMatrix.at<double>(r,c) << "\n";
+            }
+        }
+
+        in >> rows;
+        in >> cols;
+
+        distanceCoeff = Mat::zeros(rows, cols, CV_64F);
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                double read = 0.0f;
+                in >> read;
+                distanceCoeff.at<double>(r,c) = read;
+                cout << distanceCoeff.at<double>(r,c) << "\n";
+            }
+        }
+
+        in.close();
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
+
 bool saveCameraCalibration(string filename, Mat cameraMatrix, Mat distanceCoeff) {
     ofstream out(filename);
     if (out) {
