@@ -39,6 +39,7 @@ Controlling Real Drone
 mavproxy.py --master udp:10.0.0.48:14550 --out udp:127.0.0.1:14551 --out udp:10.0.0.235:14550
 
 # the first IP address is where the drone is pointing mavlink telemetry to. 
+#If Emlid image is installed on copter properly then the file to modify is at /etc/default/arducopter. 
 #second is local loopback for controlling it
 #third is external GCS for monitoring the telemetry - my microsoft surface
 
