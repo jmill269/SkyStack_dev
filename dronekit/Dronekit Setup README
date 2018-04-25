@@ -1,0 +1,61 @@
+Linux Dronekit Setup
+1) Connect to Wifi 
+	a) Settings --> Software & Updates --> Additional drivers; Click on install drivers for wifi. 
+
+2) Install Python
+
+sudo apt-get install python-pip python-dev
+
+3) Install dronekit
+
+pip install dronekit
+
+pip install dronekit-sitl
+
+4) Install MavProxy
+
+sudo apt-get install python-opencv python-wxgtk3.0 python-matplotlib python-pygame python-lxml
+
+pip install MAVProxy
+
+5) Create SITL Drone
+
+dronekit-sitl copter --home=-35.363261,149.165230,584,353
+
+6) Connect MavProxy to drone and forward signal to 2 other locations
+
+mavproxy.py --master tcp:127.0.0.1:5760 --out udp:127.0.0.1:14551 --out udp:10.0.0.235:14550
+
+#The first IP is the IP of the vehicle, the second is the IP of local feedback (since it is simulated the drone and the computer from which we are controlling it have the same IP Address), the third is the IP of another computer with a GCS open. 
+
+7) Connect GCS & Run python script mission
+
+Controlling Real Drone
+
+1)Turn on drone
+
+2)Connect via mavProxy
+
+mavproxy.py --master udp:10.0.0.48:14550 --out udp:127.0.0.1:14551 --out udp:10.0.0.235:14550
+
+# the first IP address is where the drone is pointing mavlink telemetry to. 
+#If Emlid image is installed on copter properly then the file to modify is at /etc/default/arducopter. 
+#second is local loopback for controlling it
+#third is external GCS for monitoring the telemetry - my microsoft surface
+
+Important Navio 2 Commands
+
+1) Help Page
+
+emlidtool ardupilot
+
+2) Acces to wifi document
+
+sudo nano /boot/wpa_supplicant.conf
+
+3) GCS and Telem IP
+
+sudo nano /etc/default/arducopter
+
+
+
