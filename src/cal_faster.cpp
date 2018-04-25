@@ -14,6 +14,7 @@ using namespace cv;
 
 const float calSquareDim = 0.025f;
 const float arucoSquareDim = 0.1143f;
+//const float arucoSquareDim = 0.254f; 10 inches
 const Size boardDimensions = Size(6,9);
 
 
