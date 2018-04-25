@@ -148,6 +148,9 @@ int startMonitoring(const Mat& cameraMatrix, const Mat& distortionCoeff) {
         // any problems with this method can be attriubted to a shitty camera calibration matrix.
         // use 20-50 images instead of 15, and make sure to really rotate and get farther away.
 
+        cout << "Rotation Vector: " << rotationVectors << endl;
+        cout << "Translation Vector: " << translationVectors << endl;
+
 
         /**
             This loop is more for testing purposes. Once we can see that the axis
