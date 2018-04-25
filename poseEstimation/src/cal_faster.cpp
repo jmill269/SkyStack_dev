@@ -146,12 +146,8 @@ int startMonitoring(const Mat& cameraMatrix, const Mat& distortionCoeff) {
 
         // might need to yoss an [i]th index here for the rVecs and tVecs.
 
-        // any problems with this method can be attriubted to a shitty camera calibration matrix.
+        // any problems with this method can be attriubted to a bad camera calibration matrix.
         // use 20-50 images instead of 15, and make sure to really rotate and get farther away.
-
-        //cout << "Rotation Vector: " << rotationVectors << endl;
-        //cout << "Translation Vector: " << translationVectors << endl;
-
 
         /**
             This loop is more for testing purposes. Once we can see that the axis
@@ -159,7 +155,7 @@ int startMonitoring(const Mat& cameraMatrix, const Mat& distortionCoeff) {
             out and we can just work with the rotation/translation vectors as necessary.
         */
         for (int i = 0; i < markerIDs.size(); i++) {
-            aruco::drawAxis(frame, cameraMatrix, distortionCoeff,
+            aruco::drawAxis(frame, cameraMatrix, distortionCoeff,                   // line is optional
                 rotationVectors[i], translationVectors[i], 0.1f);
         cout << "Rotation Vector: " << rotationVectors[i] << endl;
         cout << "Translation Vector: " << translationVectors[i] << endl;
