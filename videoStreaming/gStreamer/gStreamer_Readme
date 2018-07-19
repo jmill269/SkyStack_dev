@@ -1,0 +1,20 @@
+gStreamer is a nice way to stream footage from the Raspi to a remote computer
+using a local network. 
+
+1) Follow instructions at link below to setup gStreamer
+
+https://docs.emlid.com/navio2/common/dev/video-streaming/
+
+2) If receive error message saying missing h.264
+
+<sudo apt install gstreamer1.0-libav>
+
+3) if receive error message saying missing h264parse
+
+<sudo apt-get install gstreamer1.0-plugins-bad>
+
+4) Look at first link for details on running.  
+
+5) to disable autostart on Drone run following command. 
+
+<sudo systemctl disable raspicam>
