@@ -154,9 +154,10 @@ int startMonitoring(const Mat& cameraMatrix, const Mat& distortionCoeff) {
             are being drawn correctly on different markers, this can be commented
             out and we can just work with the rotation/translation vectors as necessary.
         */
+
         for (int i = 0; i < markerIDs.size(); i++) {
-            aruco::drawAxis(frame, cameraMatrix, distortionCoeff,                   // line is optional
-                rotationVectors[i], translationVectors[i], 0.1f);
+            //aruco::drawAxis(frame, cameraMatrix, distortionCoeff,                   // line is optional
+                //rotationVectors[i], translationVectors[i], 0.1f);
         cout << "Rotation Vector: " << rotationVectors[i] << endl;
         cout << "Translation Vector: " << translationVectors[i] << endl;
 
