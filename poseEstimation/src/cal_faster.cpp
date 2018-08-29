@@ -163,10 +163,10 @@ int startMonitoring(const Mat& cameraMatrix, const Mat& distortionCoeff) {
 
         }
 
-        imshow("PiCam", frame);
+        /*imshow("PiCam", frame);
         if (waitKey(30) >= 0) {
             break;
-        }
+        }*/
     }
 
     return 1;
