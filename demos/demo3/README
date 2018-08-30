@@ -1,0 +1,5 @@
+This demo is designed to allow the gimbal to track the Aruco tag. 
+It makes use of only the pitch which is all we should need for the initial demo.
+
+Work in progress.
+
