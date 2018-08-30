@@ -158,8 +158,9 @@ int startMonitoring(const Mat& cameraMatrix, const Mat& distortionCoeff) {
         for (int i = 0; i < markerIDs.size(); i++) {
             //aruco::drawAxis(frame, cameraMatrix, distortionCoeff,                   // line is optional
                 //rotationVectors[i], translationVectors[i], 0.1f);
-        cout << "Rotation Vector: " << rotationVectors[i] << endl;
-        cout << "Translation Vector: " << translationVectors[i] << endl;
+
+            cout << translationVectors[i] << endl;
+            cout << rotationVectors[i] << endl;
 
         }
 
