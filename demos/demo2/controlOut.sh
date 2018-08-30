@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-python2 control_gimbal3.py & #File should be kept in same directory as this file.
+python2 control_gimbal4.py & #File should be kept in same directory as this file.
 
 echo "Started Gimbal Control Program"
 
@@ -25,8 +25,9 @@ do
 	then
 		echo "Command Input is Invalid."
 		echo "Please enter a value between 0 and 3"
-	fi
+	else
 
-	echo $COMMAND | control_gimbal3.py
+		echo $COMMAND | control_gimbal4.py
+	fi
 done
 
