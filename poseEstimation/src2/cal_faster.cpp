@@ -88,7 +88,7 @@ bool loadCameraCalibration(string filename, Mat& cameraMatrix, Mat& distortionCo
                 double read = 0.0f;
                 in >> read;
                 cameraMatrix.at<double>(r,c) = read;
-                cout << cameraMatrix.at<double>(r,c) << "\n";
+                //cout << cameraMatrix.at<double>(r,c) << "\n";
             }
         }
 
@@ -102,7 +102,7 @@ bool loadCameraCalibration(string filename, Mat& cameraMatrix, Mat& distortionCo
                 double read = 0.0f;
                 in >> read;
                 distortionCoeff.at<double>(r,c) = read;
-                cout << distortionCoeff.at<double>(r,c) << "\n";
+                //cout << distortionCoeff.at<double>(r,c) << "\n";
             }
         }
 
@@ -132,6 +132,7 @@ int startMonitoring(const Mat& cameraMatrix, const Mat& distortionCoeff) {
     //namedWindow("PiCam", CV_WINDOW_AUTOSIZE); //This might be the source of the error.
 
     vector<Vec3d> rotationVectors, translationVectors;
+    //vector<double> outputVector(6);
 
     while (true) {
         if (!vid.read(frame)) {
@@ -158,8 +159,14 @@ int startMonitoring(const Mat& cameraMatrix, const Mat& distortionCoeff) {
         for (int i = 0; i < markerIDs.size(); i++) {
             //aruco::drawAxis(frame, cameraMatrix, distortionCoeff,                   // line is optional
                 //rotationVectors[i], translationVectors[i], 0.1f);
-        cout << "Rotation Vector: " << rotationVectors[i] << endl;
-        cout << "Translation Vector: " << translationVectors[i] << endl;
+        /*outputVector[0] = (double) rotationVectors[i][0];
+	outputVector[1] = (double) rotationVectors[i][1];
+	outputVector[2] = (double) rotationVectors[i][2];
+	outputVector[3] = (double) translationVectors[i][0];
+	outputVector[4] = (double) translationVectors[i][1];
+	outputVector[5] = (double) translationVectors[i][2]; */
+        cout << translationVectors[i] << endl;
+	cout << std::flush;
 
         }
 
